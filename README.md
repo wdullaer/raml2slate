@@ -6,7 +6,7 @@ It is inspired by [slate](https://github.com/lord/slate) and [raml2html](https:/
 
 The package is usable, but the API and templates might still change based upon feedback.
 
-![Example](https://raw.github.com/example-image)
+![Example](https://raw.github.com/wdullaer/raml2slate/gh-pages/example-image.png)
 
 ## Installation
 
