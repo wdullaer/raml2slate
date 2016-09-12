@@ -1,0 +1,34 @@
+---
+title: API Documentation
+
+language_tabs:
+  - response
+  - body
+
+search: true
+---
+{% set comma = joiner() %}
+# {{ title }} Documentation
+{% if version %}**version** {{ version }}{% endif %}  
+{% if baseUri %}**baseUri** {{ baseUri }}{% endif %}  
+{% if protocols %}**protocols**
+  {% for protocol in protocols -%}
+    {{ comma() }} {{protocol}}
+  {%- endfor %}
+{% endif -%}  
+{% if mediaType %}**mediaType** {{ mediaType }}{% endif %}
+
+{% for item in documentation %}
+# {{ item.title }}
+{{ item.content }}
+{% endfor %}
+
+---
+
+{% for resource in resources %}
+# {% if resource.displayName %}{{ resource.displayName }}{% else %}{{ resource.relativeUri }}{% endif %}
+{{ resource.description }}
+
+{% include "./resource.nunjucks" %}
+
+{% endfor %}

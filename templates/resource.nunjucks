@@ -1,0 +1,76 @@
+{% if (resource.methods or (resource.description and resource.parentUrl)) %}
+{% if resource.parentUrl %}{{ resource.description }}{% endif %}
+{% for method in resource.methods %}
+
+{% if resource.displayName %}
+## {{ resource.displayName + " " + method.method }}
+{% else %}
+## {{ resource.parentUrl }}{{ resource.relativeUri}} {{ method.method }}
+{% endif %}
+
+{% if method.responses["200"] or method.responses["201"] %}
+<div class="languagebox response">
+```
+{%- if method.responses["200"] %}
+{{ method.responses["200"].body["application/json"].example }}
+{% endif -%}
+{%- if method.responses["201"] %}
+{{ method.responses["201"].body["application/json"].example }}
+{% endif -%}
+```
+</div>
+{% endif %}
+
+{% if method.body["application/json"] %}
+<div class="languagebox body">
+```
+{{ method.body["application/json"].example }}
+```
+</div>
+{% endif %}
+
+`{{ (method.method | upper )}}: {{ resource.parentUrl }}{{ resource.relativeUri }}` {% if method.securedBy %} *(secured)*{% endif %}
+
+{{ method.description }}
+
+{% if method.allUriParameters.length != 0 %}
+*** URI Parameters ***
+
+Required | DisplayName | Type | Example | Description |
+---------|-------------|------|---------|-------------|
+{% for param in method.allUriParameters -%}
+{{ param.required }} | {{ param.displayName }} | {{ param.type }} | {% if param.example %} {{ param.example }} {% endif %} | {{ param.description }}
+{% endfor %}
+{% endif %}
+
+{% if (method.headers | length) != 0 %}
+*** Header Parameters ***
+
+| Required | Name        | Type | Example | Description |
+|----------|-------------|------|---------|-------------|
+{% for header, headerProps in method.headers -%}
+| {{ headerProps.required }} | {{ header }} | {{ headerProps.type }} | {% if headerProps.example %} {{ headerProps.example }} {% endif %} | {{ headerProps.description }} |
+{% endfor %}
+{% endif %}
+
+{% if (method.queryParameters | length) != 0 %}
+*** Query Parameters ***
+
+Required | DisplayName | Type | Example | Description |
+---------|-------------|------|---------|-------------|
+{% for title, param in method.queryParameters -%}
+{{ param.required }} | {{ param.displayName }} | {{ param.type }} | {% if param.example %}{{ param.example }} {% else %} no example {% endif %} | {{ param.description }}
+{% endfor %}
+{% endif %}
+
+*** Possible Responses ***
+{% set comma = joiner() %}
+{%- for code, body in method.responses -%}
+ {{ comma() }} {{ code }}
+{%- endfor -%}
+
+{%- endfor -%}
+{% endif %}
+{% for resource in resource.resources %}
+{% include "./resource.nunjucks" %}
+{% endfor %}

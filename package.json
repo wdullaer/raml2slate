@@ -1,0 +1,67 @@
+{
+  "name": "raml2slate",
+  "version": "0.0.1",
+  "description": "Render the RAML API spec in the slate documentation layout",
+  "homepage": "https://github.com/wdullaer/raml2slate",
+  "author": {
+    "name": "Wouter Dullaert",
+    "email": "wouter.dullaert@gmail.com",
+    "url": "https://wdullaer.com"
+  },
+  "files": [
+    "lib",
+    "templates",
+    "themes"
+  ],
+  "main": "lib/index.js",
+  "bin": {
+    "raml2slate": "lib/cli.js"
+  },
+  "keywords": [
+    "raml",
+    "slate",
+    "documentation",
+    "api",
+    "docs"
+  ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "ejs": "^2.5.2",
+    "immutable": "^3.8.1",
+    "metalsmith": "^2.2.0",
+    "metalsmith-assets": "^0.1.0",
+    "metalsmith-layouts": "^1.6.5",
+    "metalsmith-markdown": "^0.2.1",
+    "metalsmith-metallic": "^1.0.0",
+    "metalsmith-stylus": "^2.0.0",
+    "mkdirp": "^0.5.1",
+    "raml2md": "^3.0.1",
+    "tmp": "^0.0.28"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
+    "chai-immutable": "^1.6.0",
+    "eslint": "^3.1.1",
+    "eslint-config-standard": "^5.3.5",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0",
+    "istanbul": "^0.4.4",
+    "mocha": "^3.0.2"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  },
+  "repository": "wdullaer/raml2slate",
+  "scripts": {
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha",
+    "lint": "./node_modules/.bin/eslint lib test",
+    "mocha": "./node_modules/.bin/mocha",
+    "prepublish": "npm run test",
+    "test": "npm run lint && npm run coverage"
+  },
+  "license": "Apache-2.0"
+}
