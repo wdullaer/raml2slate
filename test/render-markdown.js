@@ -1,5 +1,5 @@
 'use strict'
-const {expect} = require('chai')
+const expect = require('chai').expect
 const fs = require('fs')
 const renderMarkdown = require('../lib/render-markdown.js')
 const tmp = require('../lib/tmp-promise.js')

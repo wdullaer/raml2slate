@@ -1,5 +1,5 @@
 'use strict'
-const {expect} = require('chai')
+const expect = require('chai').expect
 const tmp = require('../lib/tmp-promise.js')
 
 describe(('tmp-promise'), () => {

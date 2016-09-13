@@ -1,5 +1,5 @@
 'use strict'
-const {expect} = require('chai')
+const expect = require('chai').expect
 const fs = require('fs')
 const path = require('path')
 const tmp = require('tmp')
@@ -19,12 +19,14 @@ describe('copy-file', () => {
 
   it('should reject if the destination directory cannot be created', () => {
     let sourceFile = path.join(__dirname, '../README.md')
-    return expect(copyFile(sourceFile, '/root/subdir/destfile')).to.be.rejected
+    let dest = tmp.dirSync({mode: parseInt('0400', 8)}).name
+    return expect(copyFile(sourceFile, path.join(dest, 'subdir/destfile'))).to.be.rejected
   })
 
   it('should reject if the destination file cannot be created', () => {
     let sourceFile = path.join(__dirname, '../README.md')
-    return expect(copyFile(sourceFile, '/root/destfile')).to.be.rejected
+    let dest = tmp.dirSync({mode: parseInt('0400', 8)}).name
+    return expect(copyFile(sourceFile, path.join(dest, 'destfile'))).to.be.rejected
   })
 
   it('should copy the file', () => {

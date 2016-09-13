@@ -1,5 +1,5 @@
 'use strict'
-const {expect} = require('chai')
+const expect = require('chai').expect
 const immutable = require('immutable')
 const path = require('path')
 const validateConfig = require('../lib/validate-config.js')

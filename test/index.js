@@ -1,10 +1,11 @@
 'use strict'
-const {expect} = require('chai')
+const expect = require('chai').expect
 const fs = require('fs')
 const path = require('path')
 const tmp = require('../lib/tmp-promise.js')
 
-const {getDefaultThemePath, render} = require('../lib')
+const getDefaultThemePath = require('../lib').getDefaultThemePath
+const render = require('../lib').render
 
 describe('render()', () => {
   it('should return a promise', () => {
