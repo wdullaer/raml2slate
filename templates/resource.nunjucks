@@ -8,6 +8,10 @@
 ## {{ resource.parentUrl }}{{ resource.relativeUri}} {{ method.method }}
 {% endif %}
 
+`{{ (method.method | upper )}}: {{ resource.parentUrl }}{{ resource.relativeUri }}` {% if method.securedBy %} *(secured)*{% endif %}
+
+{{ method.description }}
+
 {% if method.responses["200"] or method.responses["201"] %}
 <div class="languagebox response">
 ```
@@ -29,43 +33,134 @@
 </div>
 {% endif %}
 
-`{{ (method.method | upper )}}: {{ resource.parentUrl }}{{ resource.relativeUri }}` {% if method.securedBy %} *(secured)*{% endif %}
-
-{{ method.description }}
 
 {% if method.allUriParameters.length != 0 %}
-*** URI Parameters ***
+<br>
+***<big>URI Parameters</big>***
 
-Required | DisplayName | Type | Example | Description |
----------|-------------|------|---------|-------------|
 {% for param in method.allUriParameters -%}
-{{ param.required }} | {{ param.displayName }} | {{ param.type }} | {% if param.example %} {{ param.example }} {% endif %} | {{ param.description }}
+**{{ param.displayName }}**  
+{{ param.description }}
+
+<table>
+  <thead>
+    <th>Property</th>
+    <th style="width: 99%">Value</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><i>required</i></td>
+      <td>{{ param.required }}</td>
+    </tr>
+    <tr>
+      <td><i>type</i></td>
+      <td>{{ param.type }}</td>
+    </tr>
+    {% if param.enum -%}
+    {%- set comma = joiner() -%}
+    <tr>
+      <td><i>oneOf</i></td>
+      <td>{% for value in param.enum %}{{ comma() }} {{ value }}{% endfor %}</td>
+    </tr>
+    {% endif -%}
+    {% if param.example -%}
+    <tr>
+      <td><i>example</i></td>
+      <td><code>{{ param.example }}</code></td>
+    </tr>
+    {% endif -%}
+  </tbody>
+</table>
+
 {% endfor %}
 {% endif %}
 
 {% if (method.headers | length) != 0 %}
-*** Header Parameters ***
+<br>
+***<big>Header Parameters</big>***
 
-| Required | Name        | Type | Example | Description |
-|----------|-------------|------|---------|-------------|
-{% for header, headerProps in method.headers -%}
-| {{ headerProps.required }} | {{ header }} | {{ headerProps.type }} | {% if headerProps.example %} {{ headerProps.example }} {% endif %} | {{ headerProps.description }} |
+{% for header, headerProps in method.headers %}
+**{{ header }}**  
+{{ headerProps.description }}
+
+<table>
+  <thead>
+    <th>Property</th>
+    <th style="width: 99%;">Value</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><i>required</i></td>
+      <td>{{ headerProps.required }}</td>
+    </tr>
+    <tr>
+      <td><i>type</i></td>
+      <td>{{ headerProps.type }}</td>
+    </tr>
+    {% if headerProps.enum -%}
+    {%- set comma = joiner() -%}
+    <tr>
+      <td><i>oneOf</i></td>
+      <td>{% for value in headerProps.enum %}{{ comma() }} {{ value }}{% endfor %}</td>
+    </tr>
+    {%- endif %}
+    {% if headerProps.example -%}
+    <tr>
+      <td><i>example</i></td>
+      <td><code>{{ headerProps.example}}</code></td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
 {% endfor %}
 {% endif %}
 
 {% if (method.queryParameters | length) != 0 %}
-*** Query Parameters ***
+<br>
+***<big>Query Parameters</big>***
 
-Required | DisplayName | Type | Example | Description |
----------|-------------|------|---------|-------------|
-{% for title, param in method.queryParameters -%}
-{{ param.required }} | {{ param.displayName }} | {{ param.type }} | {% if param.example %}{{ param.example }} {% else %} no example {% endif %} | {{ param.description }}
+{% for title, param in method.queryParameters %}
+**{{ title }}**  
+{{ param.description }}
+
+<table>
+  <thead>
+    <th>Property</th>
+    <th style="width: 99%;">Value</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><i>required</i></td>
+      <td>{{ param.required }}</td>
+    </tr>
+    <tr>
+      <td><i>type</i></td>
+      <td>{{ param.type }}</td>
+    </tr>
+    {% if param.enum -%}
+    {%- set comma = joiner() -%}
+    <tr>
+      <td><i>oneOf</i></td>
+      <td>{% for value in param.enum %}{{ comma() }} {{ value }}{% endfor %}</td>
+    </tr>
+    {% endif -%}
+    {% if param.example -%}
+    <tr>
+      <td><i>example</i></td>
+      <td><code>{{ param.example }}</code></td>
+    </tr>
+    {% endif -%}
+  </tbody>
+</table>
+
 {% endfor %}
 {% endif %}
 
-*** Possible Responses ***
+<br>
+***<big>Possible Responses</big>***
 {% set comma = joiner() %}
-{%- for code, body in method.responses -%}
+{% for code, body in method.responses -%}
  {{ comma() }} {{ code }}
 {%- endfor -%}
 

@@ -14,8 +14,8 @@ search: true
 {% if protocols %}**protocols**
   {% for protocol in protocols -%}
     {{ comma() }} {{protocol}}
-  {%- endfor %}
-{% endif -%}  
+  {%- endfor %}  
+{% endif -%}
 {% if mediaType %}**mediaType** {{ mediaType }}{% endif %}
 
 {% for item in documentation %}
