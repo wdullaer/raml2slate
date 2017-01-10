@@ -12,27 +12,30 @@
 
 {{ method.description }}
 
-{% if method.responses["200"] or method.responses["201"] %}
+{% for response in method.responses %}
+  {% for body in response.body %}
+    {% for example in body.examples %}
+      {# Maybe put application/json in the tabs at the top and show all responses if a flag is set #}
+      {% if (response.code == "200" or response.code == "201") and body.key == "application/json" %}
 <div class="languagebox response">
 ```
-{%- if method.responses["200"] %}
-{{ method.responses["200"].body["application/json"].example }}
-{% endif -%}
-{%- if method.responses["201"] %}
-{{ method.responses["201"].body["application/json"].example }}
-{% endif -%}
+{{ example }}
 ```
 </div>
-{% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+{% endfor %}
 
-{% if method.body["application/json"] %}
+{% for body in method.body %}
+  {% for example in body.examples %}
 <div class="languagebox body">
 ```
-{{ method.body["application/json"].example }}
+{{ example }}
 ```
 </div>
-{% endif %}
-
+  {% endfor %}
+{% endfor %}
 
 {% if method.allUriParameters.length != 0 %}
 <br>
@@ -63,10 +66,11 @@
       <td>{% for value in param.enum %}{{ comma() }} {{ value }}{% endfor %}</td>
     </tr>
     {% endif -%}
-    {% if param.example -%}
+    {% if param.examples -%}
+    {%- set comma = joiner() -%}
     <tr>
-      <td><i>example</i></td>
-      <td><code>{{ param.example }}</code></td>
+      <td><i>examples</i></td>
+      <td>{% for value in param.examples %}{{ comma() }}<code>{{ value }}</code>{% endfor %}</td>
     </tr>
     {% endif -%}
   </tbody>
@@ -79,9 +83,9 @@
 <br>
 ***<big>Header Parameters</big>***
 
-{% for header, headerProps in method.headers %}
-**{{ header }}**  
-{{ headerProps.description }}
+{% for header in method.headers %}
+**{{ header.key }}**  
+{{ header.description }}
 
 <table>
   <thead>
@@ -91,23 +95,24 @@
   <tbody>
     <tr>
       <td><i>required</i></td>
-      <td>{{ headerProps.required }}</td>
+      <td>{{ header.required }}</td>
     </tr>
     <tr>
       <td><i>type</i></td>
-      <td>{{ headerProps.type }}</td>
+      <td>{{ header.type }}</td>
     </tr>
-    {% if headerProps.enum -%}
+    {% if header.enum -%}
     {%- set comma = joiner() -%}
     <tr>
       <td><i>oneOf</i></td>
-      <td>{% for value in headerProps.enum %}{{ comma() }} {{ value }}{% endfor %}</td>
+      <td>{% for value in header.enum %}{{ comma() }} {{ value }}{% endfor %}</td>
     </tr>
     {%- endif %}
-    {% if headerProps.example -%}
+    {% if header.examples -%}
+    {%- set comma = joiner() -%}
     <tr>
-      <td><i>example</i></td>
-      <td><code>{{ headerProps.example}}</code></td>
+      <td><i>examples</i></td>
+      <td>{% for value in header.examples %}{{ comma() }}<code>{{ value }}</code>{% endfor %}</td>
     </tr>
     {% endif %}
   </tbody>
@@ -120,8 +125,8 @@
 <br>
 ***<big>Query Parameters</big>***
 
-{% for title, param in method.queryParameters %}
-**{{ title }}**  
+{% for param in method.queryParameters %}
+**{{ param.key }}**  
 {{ param.description }}
 
 <table>
@@ -145,10 +150,11 @@
       <td>{% for value in param.enum %}{{ comma() }} {{ value }}{% endfor %}</td>
     </tr>
     {% endif -%}
-    {% if param.example -%}
+    {% if param.examples -%}
+    {%- set comma = joiner() -%}
     <tr>
-      <td><i>example</i></td>
-      <td><code>{{ param.example }}</code></td>
+      <td><i>examples</i></td>
+      <td>{% for value in param.examples %}{{ comma() }}<code>{{ value }}</code>{% endfor %}</td>
     </tr>
     {% endif -%}
   </tbody>
@@ -160,8 +166,8 @@
 <br>
 ***<big>Possible Responses</big>***
 {% set comma = joiner() %}
-{% for code, body in method.responses -%}
- {{ comma() }} {{ code }}
+{% for response in method.responses -%}
+ {{ comma() }} {{ response.code }}
 {%- endfor -%}
 
 {%- endfor -%}
