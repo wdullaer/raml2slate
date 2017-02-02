@@ -10,6 +10,7 @@
   },
   "files": [
     "lib",
+    "plugins",
     "templates",
     "theme"
   ],
