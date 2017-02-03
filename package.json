@@ -1,6 +1,6 @@
 {
   "name": "raml2slate",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Render the RAML API spec in the slate documentation layout",
   "homepage": "https://github.com/wdullaer/raml2slate",
   "author": {
