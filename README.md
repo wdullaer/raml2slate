@@ -1,4 +1,6 @@
 # raml2slate [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/wdullaer/raml2slate.svg)](https://greenkeeper.io/)
 > Render the RAML API spec in the slate documentation layout
 
 This package is meant to render nice looking documentation for your REST API, based on a RAML file.
